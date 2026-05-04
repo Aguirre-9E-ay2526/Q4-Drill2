@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Heat Index Checker</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+
+    background-image: url("hotsky.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 25px;
+        width: 340px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 15px;
+    }
+
+    .input-group {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    label {
+        font-size: 13px;
+        color: #333;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background: #ff5e62;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background: #e94b50;
+    }
+
+    #result {
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .safe { color: green; }
+    .caution { color: orange; }
+    .danger { color: red; }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🌡️ Heat Index Checker</h2>
+
+    <div class="input-group">
+        <label>Temperature (°C)</label>
+        <input type="number" id="temp" placeholder="e.g. 32">
+    </div>
+
+    <div class="input-group">
+        <label>Humidity (%)</label>
+        <input type="number" id="humidity" placeholder="e.g. 70">
+    </div>
+
+    <button onclick="checkHeatIndex()">Check Heat Index</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function checkHeatIndex() {
+    let t = Number(document.getElementById("temp").value);
+    let h = Number(document.getElementById("humidity").value);
+    let result = document.getElementById("result");
+
+    if (isNaN(t) || isNaN(h)) {
+        result.innerHTML = "Please enter valid temperature and humidity.";
+        return;
+    }
+
+    // Heat index approximation formula (°C & %)
+    let heatIndex = 
+        -8.784695 + 1.61139411 * t + 2.338549 * h
+        
+0.14611605 * t * h;
+
+    heatIndex = heatIndex.toFixed(1);
+
+    if (heatIndex < 27) {
+        result.className = "safe";
+        result.innerHTML = "🟢 Safe: " + heatIndex + "°C";
+    } 
+    else if (heatIndex < 32) {
+        result.className = "caution";
+        result.innerHTML = "🟡 Caution: " + heatIndex + "°C";
+    } 
+    else {
+        result.className = "danger";
+        result.innerHTML = "🔴 Danger: " + heatIndex + "°C";
+    }
+}
+</script>
+
+</body>
+</html>
